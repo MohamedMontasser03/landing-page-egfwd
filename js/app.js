@@ -29,11 +29,16 @@ const sections = document.querySelectorAll("[data-nav]");
  * Start Helper Functions
  *
  */
-function createDomElement(tagName, className = "", content = "") {
-  const el = document.createElement(tagName);
-  el.classList.add(className);
-  el.textContent = content;
-  return el;
+function createLink(i) {
+  const navListItem = document.createElement("li");
+  const navLink = document.createElement("a");
+  navLink.classList.add("menu__link");
+  navLink.textContent = `Section ${i + 1}`;
+  navLink.setAttribute("href", `#section${i + 1}`);
+  navLink.addEventListener("click", linkScroll);
+
+  navListItem.appendChild(navLink);
+  return navListItem;
 }
 /**
  * End Helper Functions
@@ -47,13 +52,9 @@ function initNav() {
   const ul = document.getElementsByTagName("ul")[0];
 
   for (let i = 0; i < sections.length; i++) {
-    const navListItem = document.createElement("li");
-    const navLink = createDomElement("a", "menu__link", `Section ${i + 1}`);
-    navLink.setAttribute("href", `#section${i + 1}`);
-    navLink.addEventListener("click", linkScroll);
+    const link = createLink(i);
 
-    navListItem.appendChild(navLink);
-    fragment.appendChild(navListItem);
+    fragment.appendChild(link);
   }
 
   ul.appendChild(fragment);
