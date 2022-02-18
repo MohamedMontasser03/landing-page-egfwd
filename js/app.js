@@ -40,6 +40,11 @@ function createLink(i) {
   navListItem.appendChild(navLink);
   return navListItem;
 }
+
+//check if the section is in view
+function isInView(rect) {
+  return rect.bottom - 0.25 * rect.height > 0 && rect.top < window.innerHeight;
+}
 /**
  * End Helper Functions
  * Begin Main Functions
@@ -61,7 +66,21 @@ function initNav() {
 }
 
 // Add class 'active' to section when near top of viewport
-function activateSection() {}
+function activateSection(e) {
+  let selected = false;
+
+  sections.forEach((el, i) => {
+    const rect = el.getBoundingClientRect();
+
+    //check if 50% of the box is in view and set class
+    if (isInView(rect) && !selected) {
+      el.classList.add("your-active-class");
+      selected = true;
+    } else {
+      el.classList.remove("your-active-class");
+    }
+  });
+}
 
 // Scroll to anchor ID using scrollTO event
 function linkScroll(e) {
@@ -81,5 +100,7 @@ function linkScroll(e) {
 window.addEventListener("load", initNav);
 
 // Scroll to section on link click
+//added the event dynamically when initializing the links
 
 // Set sections as active
+window.addEventListener("scroll", activateSection);
