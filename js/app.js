@@ -23,6 +23,7 @@
  *
  */
 const sections = document.querySelectorAll("[data-nav]");
+const ul = document.getElementById("navbar__list");
 
 /**
  * End Global Variables
@@ -54,7 +55,6 @@ function isInView(rect) {
 // build the nav
 function initNav() {
   const fragment = document.createDocumentFragment();
-  const ul = document.getElementsByTagName("ul")[0];
 
   for (let i = 0; i < sections.length; i++) {
     const link = createLink(i);
@@ -74,10 +74,12 @@ function activateSection(e) {
 
     //check if 50% of the box is in view and set class
     if (isInView(rect) && !selected) {
-      el.classList.add("your-active-class");
+      el.classList.add("landing__container--active");
+      ul.children[i].children[0].classList.add("menu__link--active");
       selected = true;
     } else {
-      el.classList.remove("your-active-class");
+      el.classList.remove("landing__container--active");
+      ul.children[i].children[0].classList.remove("menu__link--active");
     }
   });
 }
@@ -85,9 +87,11 @@ function activateSection(e) {
 // Scroll to anchor ID using scrollTO event
 function linkScroll(e) {
   e.preventDefault();
-  const id = e.target.getAttribute("href");
-  const index = parseInt(id.charAt(id.length - 1)) - 1;
-  sections[index].scrollIntoView({ behavior: "smooth" });
+  if (!e.target.classList.contains("menu__link--active")) {
+    const id = e.target.getAttribute("href");
+    const index = parseInt(id.charAt(id.length - 1)) - 1;
+    sections[index].scrollIntoView({ behavior: "smooth" });
+  }
 }
 
 /**
